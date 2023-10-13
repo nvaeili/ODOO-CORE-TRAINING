@@ -1,0 +1,29 @@
+version: '3'
+services:
+  web:
+    build: .
+    container_name: odoo15-web
+    depends_on:
+      - db
+    # command: odoo -d database_name -u all
+    ports:
+      - "8069:8069"
+      - "8072:8072"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+
+  db:
+    image: postgres:latest
+    container_name: odoo15-db
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:

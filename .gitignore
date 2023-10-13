@@ -1,0 +1,40 @@
+# Odoo specific
+*.pyc
+__pycache__/
+.odoo/
+__manifest__.pyc
+__manifest__.pyo
+*.egg-info/
+*.egg
+*.pyo
+*.swp
+.mypy_cache/
+.coverage
+htmlcov/
+node_modules/
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Compiled files
+*.mo
+*.pot
+
+# Logs and databases
+logs/
+db_*.sqlite*
+
+# Temporary files
+*~
+*.bak
+*.tmp
+*.log
+
+# Virtual environment
+venv/
+
+# Others
+.DS_Store
