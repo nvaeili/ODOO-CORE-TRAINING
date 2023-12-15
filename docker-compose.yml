@@ -5,7 +5,7 @@ services:
     container_name: odoo15-web
     depends_on:
       - db
-    # command: odoo -d database_name -u all
+    command: odoo -d awb.salen -u realestate_salen
     ports:
       - "8069:8069"
       - "8072:8072"
