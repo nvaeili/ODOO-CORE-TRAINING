@@ -1,0 +1,18 @@
+<odoo>
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate_property_type</field>
+        <field name="view_mode">tree,form</field> 
+    </record>
+
+    <record id="view_estate_property_type_tree" model="ir.ui.view">
+        <field name="name">estate_property_type.tree</field>
+        <field name="model">estate_property_type</field>
+        <field name="arch" type="xml">
+            <h1>
+                <field name="name"/>
+            </h1>          
+        </field>
+    </record>
+
+</odoo>
