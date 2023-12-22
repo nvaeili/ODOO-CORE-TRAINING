@@ -1,13 +1,20 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate_property"
     _description = "Real Estate Salen"
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The offer price must be positive"),
+    ]
+    _order = "id desc"
 
     name = fields.Char(string='Title',required=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode',)
+
 
     #using Date.today() to get date today 
     date_availability = fields.Date(string='Date Availability', copy=False, months=3, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
@@ -31,8 +38,8 @@ class EstateProperty(models.Model):
     #state field that has 5 values possible.
     state = fields.Selection(
             [('new', 'New'),
-            ('offer received', 'Offer received'),
-            ('offer accepted', 'Offer Accepted'),
+            ('offer_received', 'Offer received'),
+            ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Canceled')],
             string='Status',
@@ -96,3 +103,18 @@ class EstateProperty(models.Model):
         if "sold" in self.mapped("state"):
             raise UserError("Sold properties cannot be canceled.")
         return self.write({"state": "canceled"})
+    
+
+
+    #adding sql constraints so that the selling price cannot be lower than 90% of the expected price.
+    @api.constrains("expected_price", "selling_price")
+    def _check_price_difference(self):
+        for prop in self:
+            if (
+                not float_is_zero(prop.selling_price, precision_rounding=0.01)
+                and float_compare(prop.selling_price, prop.expected_price * 90.0 / 100.0, precision_rounding=0.01) < 0
+            ):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price! "
+                    + "You must reduce the expected price if you want to accept this offer."
+                )

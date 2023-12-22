@@ -2,8 +2,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
-        <field name="view_mode">tree,form</field> <!-- Define the view modes -->
-        <!-- Other necessary fields for the action -->
+        <field name="view_mode">tree,form</field>
     </record>
 
     <!-- Define the tree view separately -->
@@ -11,14 +10,18 @@
         <field name="name">estate_property.tree</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <tree>
+            <!-- Decorations for the list view (depending on the offer status) -->
+            <tree string="Properties" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
+                <!-- Adding the tags in the list (tree) view -->
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <!-- Making the date availability hidden by default -->
+                <field name="date_availability" optional="hide"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -33,6 +36,8 @@
                     <button name="action_sold" type="object" string="Sold" states="new,offer_received"/>
                     <button name="action_sold" type="object" string="Sold" states="offer_accepted" class="oe_highlight"/>
                     <button name="action_cancel" type="object" string="Cancel" states="new,offer_received,offer_accepted"/>
+
+                 <!-- Using widgets (Chapter 12) -->
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -44,7 +49,6 @@
                 </div>
                     <group>
                         <group>
-                            <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                             <field name="property_type_id" options="{'no_create': True, 'no_edit': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -100,6 +104,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
+                <!--Adding the filter domain to only show properties that has living area sqm larger than the searched number-->
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="garage"/>

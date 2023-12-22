@@ -1,11 +1,16 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 class EstatePropertyOffer(models.Model):
 
     _name = "estate_property_offer"
     _description = "Real Estate Property Offer"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "The price must be strictly positive"),
+    ]
+    _order = "price desc"
 
     price = fields.Float("Price", required=True)
     
@@ -22,6 +27,7 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate_property", string="Property", required=True)
 
+    #chapt 12 last part, this makes the offer linked to a property type when it is created
     property_type_id = fields.Many2one(
         "estate_property_type", related="property_id.property_type_id", string="Property Type", store=True
     )
@@ -42,6 +48,8 @@ class EstatePropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - date).days
 
 
+
+    #action methods for accepting and refusing offer 
     def action_accept(self):
         if "accepted" in self.mapped("property_id.offer_ids.state"):
             raise UserError("An offer has already been accepted.")
@@ -64,3 +72,5 @@ class EstatePropertyOffer(models.Model):
                 "state": "refused",
             }
         )
+    
+ 
