@@ -74,3 +74,16 @@ class EstatePropertyOffer(models.Model):
         )
     
  
+    #adding CRUD Methods to raise an error if the user tries to create an offer with a lower amount than an existing offer.
+
+    @api.model
+    def create(self, vals):
+        if vals.get("property_id") and vals.get("price"):
+            prop = self.env["estate_property"].browse(vals["property_id"])
+            # Checking if the offer is higher than existing offers
+            if prop.offer_ids:
+                max_offer = max(prop.mapped("offer_ids.price"))
+                if float_compare(vals["price"], max_offer, precision_rounding=0.01) <= 0:
+                    raise UserError("The offer must be higher than %.2f" % max_offer)
+            prop.state = "offer_received"
+        return super().create(vals)

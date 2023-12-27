@@ -118,3 +118,12 @@ class EstateProperty(models.Model):
                     "The selling price must be at least 90% of the expected price! "
                     + "You must reduce the expected price if you want to accept this offer."
                 )
+            
+    #adding CRUD Methods to prevent deletion of a property if state is new or cancelled
+            
+    def unlink(self):
+        if not set(self.mapped("state")) <= {"new", "canceled"}:
+            raise UserError("Only new and canceled properties can be deleted.")
+        return super().unlink()
+
+    
