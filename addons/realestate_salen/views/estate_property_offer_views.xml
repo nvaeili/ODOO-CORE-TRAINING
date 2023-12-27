@@ -1,5 +1,5 @@
 <odoo>
-
+    <!-- Action window for managing Property Offers -->
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">estate_property_offer</field>
@@ -7,25 +7,31 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-        <record id="estate_property_offer_view_tree" model="ir.ui.view">
+    <!-- Tree view for Property Offers -->
+    <record id="estate_property_offer_view_tree" model="ir.ui.view">
         <field name="name">estate_property_offer.tree</field>
         <field name="model">estate_property_offer</field>
         <field name="arch" type="xml">
+            <!-- Displaying Property Offers in a tree structure -->
             <tree string="Property Offers" editable="bottom" decoration-success="state == 'accepted'" decoration-danger="state == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
+                <!-- Buttons to accept or refuse offers -->
                 <button name="action_accept" type="object" title="Accept" icon="fa-check" attrs="{'invisible': [('state', '!=', False)]}"/>
                 <button name="action_refuse" type="object" title="Refuse" icon="fa-times" attrs="{'invisible': [('state', '!=', False)]}"/>
                 <field name="state" invisible="1"/>
             </tree>
         </field>
     </record>
-        <record id="estate_property_offer_view_form" model="ir.ui.view">
+
+    <!-- Form view for Property Offers -->
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate_property_offer.form</field>
         <field name="model">estate_property_offer</field>
         <field name="arch" type="xml">
+            <!-- Form view to manage Property Offers -->
             <form string="Property Offer">
                 <group>
                     <field name="price"/>
@@ -34,5 +40,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

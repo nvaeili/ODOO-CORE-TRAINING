@@ -3,11 +3,11 @@ from odoo import models
 
 class EstateProperty(models.Model):
 
-    #inheriting the estate_property model
+    # Inheriting the estate_property model
 
     _inherit = "estate_property"
 
-    #creating the account.move in the override of the action_sold method:
+    # Creating the account.move in the override of the action_sold method:
     def action_sold(self):
         res = super().action_sold()
         journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)

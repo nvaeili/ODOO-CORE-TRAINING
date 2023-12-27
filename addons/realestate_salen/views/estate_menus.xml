@@ -1,13 +1,16 @@
 <odoo>
-                
+    <!-- Root menu for Real Estate -->
     <menuitem id="real_estate_menu_root" name="Real Estate"> 
+        <!-- Submenu for Advertisements -->
         <menuitem id="menu_estate_property_advertisements" name="Advertisements">
+            <!-- Menu item for viewing Properties -->
             <menuitem id="menu_properties" action="estate_property_action"/>
         </menuitem>
+        <!-- Submenu for Settings -->
         <menuitem id="menu_estate_property_settings" name="Settings">
+            <!-- Menu items for Property Types and Tags -->
             <menuitem id="estate_property_type" action="estate_property_type_action"/>
             <menuitem id="estate_property_tag" action="estate_property_tag_action"/>
         </menuitem>
     </menuitem>
-
 </odoo>

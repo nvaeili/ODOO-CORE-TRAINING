@@ -1,38 +1,47 @@
 <odoo>
+    <!-- Action window for managing Property Types -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate_property_type</field>
         <field name="view_mode">tree,form</field> 
     </record>
 
+    <!-- Tree view for Property Types -->
     <record id="view_estate_property_type_tree" model="ir.ui.view">
         <field name="name">estate_property_type.tree</field>
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
+            <!-- Displaying the name in a header -->
             <h1>
                 <field name="name"/>
             </h1>          
         </field>
     </record>
 
+    <!-- Form view for Property Types -->
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate_property_type.form</field>
         <field name="model">estate_property_type</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <!-- Button box for actions related to Property Types -->
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_offers" type="object" class="oe_stat_button" icon="fa-money">
+                            <!-- Displaying the number of offers -->
                             <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button> 
                     </div>
+                    <!-- Displaying the name in a title -->
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
                         </h1>
                     </div>
                     <notebook>
+                        <!-- Notebook page for related Properties -->
                         <page string="Properties">
+                            <!-- Displaying associated properties in a tree -->
                             <field name="property_ids" readonly="1">
                                 <tree>
                                     <field name="name"/>
@@ -46,5 +55,4 @@
             </form>
         </field>
     </record>
-
 </odoo>
